@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService.js"
-import * as userRepositories from "../repositories/userRepository.js"
 
 export async function singIn(req: Request, res: Response) {
     const login:userService.CreateUserData = req.body
