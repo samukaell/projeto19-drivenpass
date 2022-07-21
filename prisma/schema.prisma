@@ -9,3 +9,68 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+
+  @@map("user")
+}
+
+model Categories {
+  id Int @id @default(autoincrement())
+  name String @unique
+  Tests Tests[]
+
+  @@map("categories")
+}
+
+model Terms {
+  id Int @id @default(autoincrement())
+  number Int @unique
+  Disciplines Disciplines[]
+
+  @@map("terms")
+}
+
+model Disciplines {
+  id Int @id @default(autoincrement())
+  name String @unique
+  termId Int
+  terms Terms @relation(fields: [termId],references: [id])
+  TeacherDisciplines TeacherDisciplines[]
+
+  @@map("disciplines")
+}
+
+model Teachers{
+  id Int @id @default(autoincrement())
+  name String @unique
+  TeacherDisciplines TeacherDisciplines[]
+
+  @@map("teachers")
+}
+
+model TeacherDisciplines {
+  id Int @id @default(autoincrement())
+  teacherId Int
+  teachers Teachers @relation(fields: [teacherId],references: [id])
+  disciplineId Int
+  disciplines Disciplines @relation(fields: [disciplineId],references: [id])
+  Tests Tests[]
+
+  @@map("teachersDisciplines")
+}
+
+model Tests {
+  id Int @id @default(autoincrement())
+  name String 
+  pdfUrl String
+  categoryId Int
+  categories Categories @relation(fields: [categoryId],references: [id])
+  teacherDisciplineId Int 
+  teacherDisciplines TeacherDisciplines @relation(fields: [teacherDisciplineId],references: [id])
+
+  @@map("tests")
+}
