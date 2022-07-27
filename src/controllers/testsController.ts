@@ -9,7 +9,6 @@ export async function addTests(req: Request, res: Response) {
 }
 
 export async function findTests(req: Request, res: Response) {
-    const {discipline} = req.params;
-    console.log("Discipline",discipline);
-    res.sendStatus(200);
+    const tests = await testsService.findAll();
+    res.status(200).send(tests);
 }
